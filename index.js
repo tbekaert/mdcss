@@ -1,7 +1,7 @@
-var fs     = require('fs'),
-	fsp    = require('fs-promise'),
-	marked = require('marked'),
-	path   = require('path');
+var fs     = require('fs');
+var fsp    = require('fs-promise');
+var marked = require('marked');
+var path   = require('path');
 
 var isDoc = /\/*-{3}([\s\S]*?)-{3,}/;
 var isMeta = /([A-z][\w-]*)[ \t]*:[ \t]*([\w\-\.\/][^\n]*)/g;
@@ -93,7 +93,9 @@ module.exports = require('postcss').plugin('mdcss', function (opts) {
 							} catch (error2) {
 								doc.content = '';
 
-								comment.warn(result, 'Documentation import "' + mdbase + '" could not be read.');
+								if(opts.debug) {
+									comment.warn(result, 'Documentation import "' + mdbase + '" could not be read.');
+								}
 							}
 						}
 
@@ -161,20 +163,20 @@ module.exports = require('postcss').plugin('mdcss', function (opts) {
 		}).then(function (docs) {
 			// empty the destination directory
 			return fsp.emptyDir(opts.destination)
-			// then copy the theme assets into the destination
-			.then(function () {
-				return fsp.copy(docs.assets, opts.destination);
-			})
-			// then copy the compiled template into the destination
-			.then(function () {
-				return fsp.outputFile(path.join(opts.destination, opts.index), docs.template);
-			})
-			// then copy any of the additional assets into the destination
-			.then(function () {
-				return Promise.all(opts.assets.map(function (src) {
-					return fsp.copy(src, path.join(opts.destination, path.basename(src)));
-				}));
-			});
+				// then copy the theme assets into the destination
+				.then(function () {
+					return fsp.copy(docs.assets, opts.destination);
+				})
+				// then copy the compiled template into the destination
+				.then(function () {
+					return fsp.outputFile(path.join(opts.destination, opts.index), docs.template);
+				})
+				// then copy any of the additional assets into the destination
+				.then(function () {
+					return Promise.all(opts.assets.map(function (src) {
+						return fsp.copy(src, path.join(opts.destination, path.basename(src)));
+					}));
+				});
 		});
 	};
 });
