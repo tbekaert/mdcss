@@ -1,5 +1,5 @@
 var fs     = require('fs');
-var fsp    = require('fs-promise');
+var fsp    = require('./lib/fs-promise');
 var marked = require('marked');
 var path   = require('path');
 
