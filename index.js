@@ -13,10 +13,8 @@ module.exports = require('postcss').plugin('mdcss', function (opts) {
 	/* set options */
 	opts.index = opts.index || 'index.html'; // index file
 	opts.theme = opts.theme || require('mdcss-theme-github'); // theme or default
-	opts.destination = path.join(process.cwd(), opts.destination || 'styleguide'); // destination path
-	opts.assets = (opts.assets || []).map(function (src) {
-		return path.join(process.cwd(), src);
-	}); // additional assets path
+	opts.destination = opts.destination || 'styleguide'; // destination path
+	opts.assets = opts.assets || []; // additional assets path
 	opts.markdownFiles = opts.markdownFiles || 'markdown'; // location of markdown import files
 	if (typeof opts.theme !== 'function') throw Error('The theme failed to load'); // throw if theme is not a function
 	if (opts.theme.type === 'mdcss-theme') opts.theme = opts.theme(opts); // conditionally set theme as executed theme
