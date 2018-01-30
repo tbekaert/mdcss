@@ -68,18 +68,14 @@ module.exports = require('postcss').plugin('mdcss', function (opts) {
 
 						// if there's no import specified, look for a md file with the title name inside the section folder
 						if (!mdbase) {
-							var mdFiles = opts.markdownFiles,
-								mdSection = doc.section.replace(' ', '-').toLowerCase(),
-								mdName = doc.title.replace(' ', '-').toLowerCase();
-							mdbase = mdFiles + '\/' + mdSection + '\/' + mdName + '.md';
-							// mdbase = mdspec = path.basename(src, path.extname(src));
+							mdbase = mdspec = path.basename(src, path.extname(src));
 
 							if (doc.name) {
 								mdspec += '.' + doc.name;
 							}
 
-							// mdbase += '.md';
-							// mdspec += '.md';
+							mdbase += '.md';
+							mdspec += '.md';
 						}
 
 						// try to read the closest matching documentation
